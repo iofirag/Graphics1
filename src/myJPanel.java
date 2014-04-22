@@ -1,3 +1,7 @@
+/*This application was created by Ofir Aghai & Vidran Abdovich , 22/4/2014
+ * as part of a Graphics programming course.
+ */
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -13,9 +17,7 @@ import Jama.Matrix;
 
 
 public class myJPanel extends JPanel {
-
     private BufferedImage canvas;
-
 	public myJPanel(int width, int height) {
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         // using auto the function getPreferredSize()
@@ -155,10 +157,9 @@ public class myJPanel extends JPanel {
         }
         return counter;
     }
-    
+    // Implementation of circle drawing algorithm
 	  public void drawCircle(Color c, int x0,int y0, int radiusX, int radiusY) {
 		  int radius = calculateRadius(x0,y0, radiusX, radiusY);
-		  // Implement Circle drawing
 		  int x = radius;
 		  int y = 0;
 		  int radiusError = 1-x;
@@ -185,7 +186,6 @@ public class myJPanel extends JPanel {
 
 	// Polygon drawing 
 	  public  void regularPolygon(Color c, List<Point> polygonPoints,int pointsNumber) {
-			System.out.println("Polygon");
 			  Point p[] = new Point[pointsNumber];
 		      int disatance = (int)Math.sqrt((polygonPoints.get(0).getX()-polygonPoints.get(1).getX())*(polygonPoints.get(0).getX()-polygonPoints.get(1).getX()) + (polygonPoints.get(0).getY()-polygonPoints.get(1).getY())*(polygonPoints.get(0).getY()-polygonPoints.get(1).getY()));
 		      for (int i = 0; i < pointsNumber ; i++){
@@ -200,6 +200,7 @@ public class myJPanel extends JPanel {
 		    	  drawLine(c,polygonPoints.get(0).x,polygonPoints.get(1).x,polygonPoints.get(0).y,polygonPoints.get(1).y);
 		    	  polygonPoints.remove(0);
 		      }
+		      //Drawing the last line to a point the started the shape.
 		      polygonPoints.add(pointToClose);
 	    	  drawLine(c,polygonPoints.get(0).x,pointToClose.x,polygonPoints.get(0).y,pointToClose.y);
 		}
@@ -209,14 +210,13 @@ public class myJPanel extends JPanel {
 	//Bezier curve and draws it on the canvas.
 	  public void drawBezierCurve(Color color,List<Point> points)
 	  {
-
 		  int pointX=0;
 		  int pointY=0;
 		  int prevX=0;
 		  int prevY=0;
 
-		  double t=0.00;  // t value from bezier curva calculation formula
-		  //getting 
+		  double t=0.00;  // t value from bezier curve calculation formula
+		  //getting matrixes with Ax,Bx,Cx,Dx,Ay,By,Cy,Dy values
 		  Matrix resultsForX= bezierFormula(points.get(0).x,points.get(1).x,points.get(2).x,points.get(3).x);
 		  Matrix resultsForY= bezierFormula(points.get(0).y,points.get(1).y,points.get(2).y,points.get(3).y);
 		  
@@ -242,7 +242,8 @@ public class myJPanel extends JPanel {
 		  //drawing last line
 		  drawLine(color, pointX, points.get(3).x - 8, pointY, points.get(3).y - 53);
 	  }
-	  
+	 //This function recieves X or Y values and and multiplies them with Bezier matrix.
+	 //Returns the multiplied matrix
 	  public Matrix bezierFormula(double v1, double v2, double v3,double v4){
 		  
 		  double[][] values = {{v1,0,0,0},{v2,0,0,0},{v3,0,0,0},{v4,0,0,0}};
@@ -254,29 +255,7 @@ public class myJPanel extends JPanel {
 		  Matrix result = b.times(a);
 		  return result;
 	  }
-    public void drawPoligon(Color c, int x, int y, int vX, int vY, int vertex){
-	    // Implement rectangle drawing
-
-	    repaint();
-    }
-
-
-//    public void drawRect(Color c, int x1, int y1, int width, int height) {
-//    int color = c.getRGB();
-//    // Implement rectangle drawing
-//    for (int x = x1; x < x1 + width; x++) {
-//        for (int y = y1; y < y1 + height; y++) {
-//            canvas.setRGB(x, y, color);
-//        }
-//    }
-//    repaint();
-//}
-
-//public void drawOval(Color c, int x1, int y1, int width, int height) {
-//    // Implement oval drawing
-//    repaint();
-//}
-
+    
 
     /* getter & setter */
     public BufferedImage getCanvas() {
@@ -294,7 +273,7 @@ public class myJPanel extends JPanel {
     		System.out.println("Coordinate out of bounds!");
     	}
 	}
-
+	//Used to Bold up the Bezier curve points selected by the user
 	public void putSuperPixel(int x, int y, Color c){
 		int color = c.getRGB();
 		try{

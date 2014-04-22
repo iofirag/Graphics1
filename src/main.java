@@ -1,3 +1,7 @@
+/*This application was created by Ofir Aghai & Vidran Abdovich , 22/4/2014
+ * as part of a Graphics programming course.
+ */
+
 import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -28,8 +32,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
-
-
 public class main {
 	static int numofPoints=0;
 	static List<Point> bezierPoints=new ArrayList<>();
@@ -38,29 +40,23 @@ public class main {
 	static int poligon_vertex =0;
 	static Point pointPressed =null;
 	static Point pointRelease =null;
-
 	static int lastDrag_x=0;
 	static int lastDrag_y=0;
-
-	static int shape = 1;		// 1=Line   2=Circle   3=Rectangle
+	static int shape = 1;		// 1=Line   2=Circle   3=Polygon 4=Bezier curve
 	static Color color = Color.black;
 
 	public static void main(String[] args) {
-        final int width = 600;
-        final int height = 600;
+        final int width = 900;
+        final int height = 500;
 
-        
-        
         /* java window - the container managed the frame */
         JFrame frame = new JFrame("Direct draw demo");       
         
         /* specific frame */
         pane = new myJPanel(width, height);
         
-        /******************************************************************
-         * Administrate window adjustment
-         */
-        /* Add the pane to the frame manager */
+        //******************************************************************
+
         frame.add(pane);
         // to show at least the panel data
         frame.pack();
@@ -68,14 +64,9 @@ public class main {
         frame.setResizable(true);     
         /* close all app in close button */
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        /**MENU's******************************************************/
-        /* set menu for window */
+
       	//Create the menu bar.
         JMenuBar menuBar = new JMenuBar();
-        
-     // Menu
-        //JMenu menu = new JMenu("Menu");
         JMenuItem menu_clearScreen = new JMenuItem("Clear Screen");
         menu_clearScreen.addActionListener(new ActionListener() {
 			@Override
@@ -83,10 +74,7 @@ public class main {
 				pane.fillCanvas(Color.white);
 			}
 		});
-        //Build the first menu.
-        //menu.add(menu_clearScrean);
-        //menu.setMnemonic(KeyEvent.VK_M);
-        //************************************************
+      
         
         // Objects Menu
         JMenu objectsMenu = new JMenu ("Objects");
@@ -131,9 +119,6 @@ public class main {
         objectsMenu.add(objectItem_circle);
         objectsMenu.add(objectItem_poligon);
         objectsMenu.add(objectItem_bezier);
-       
-
-       
       //************************************************
         
         // Color Menu
@@ -209,33 +194,10 @@ public class main {
         frame.add(menuBar, BorderLayout.NORTH);
         /**End menu's*******************************************************/
         
-        /* visibility */
+        // visibility 
         frame.setVisible(true);
-        
-        
-
-        
-        
-        /* print Mouse location */
-//        while (true){
-//	        PointerInfo a = MouseInfo.getPointerInfo();
-//	        Point b = a.getLocation();
-//	        x = (int) b.getX();
-//	        y = (int) b.getY();
-//	        System.out.print(new Date() +" --- x="+x +", y="+ y +"\n");
-//	        
-//	         Code for move programmatically the mouse 
-//	        Robot r;
-//			try {
-//				r = new Robot();
-//				r.mouseMove(x, y);
-//			} catch (AWTException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//        }
-        
-        /* Mouse Listener */
+          
+        // Mouse Listeners 
         frame.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent e1) {
@@ -247,15 +209,17 @@ public class main {
 				pointRelease.y-=53;
 
 				switch (shape){
-				// Draw line
+				// Draw a line
 				case 1: 
 					if (width- pointRelease.getX() >=0 && height- pointRelease.getY() >=0 )
 						pane.drawLine(color, (int)pointPressed.getX(), (int)pointRelease.getX(), (int)pointPressed.getY(), (int)pointRelease.getY());
 					else pane.drawLine(color, (int)pointPressed.getX(), (int)lastDrag_x, (int)pointPressed.getY(), (int)lastDrag_y);
 					break;
+				//Draw a circle
 				case 2:
 					pane.drawCircle(color, pointPressed.x, pointPressed.y, pointRelease.x, pointRelease.y);
 					break;
+				//Draw a polygon
 				case 3:
 					polygonPoints.add(new Point(pointPressed.x,pointPressed.y));
 					polygonPoints.add(new Point(pointRelease.x,pointRelease.y));
@@ -267,9 +231,9 @@ public class main {
 				}
 
 			}
+			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
 				System.out.println("pressed"+e.getPoint());
 				pointPressed= new Point(e.getPoint() );
 				// Fix point
@@ -278,19 +242,16 @@ public class main {
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
 				System.out.println("exited");
 
 			}
 			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
+			public void mouseEntered(MouseEvent e) {				
 				System.out.println("entered");
 
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
 				if ((shape==4) && (numofPoints<4)){ //shape 4 = bezier curve
 					pane.putSuperPixel(e.getX(),e.getY(),color);
 					numofPoints++;
@@ -307,19 +268,17 @@ public class main {
 			}
 		});
         
-        /* mouse motion */
+        // mouse motion 
         frame.addMouseMotionListener(new MouseMotionListener() {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				// TODO Auto-generated method stub
 				System.out.println("moved");
 				System.out.println( "("+e.getPoint().getX()+" , "+e.getPoint().getY()+")");
 			}
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
 				System.out.println("dragged");
 				lastDrag_x= (int) e.getPoint().getX();
 				lastDrag_y= (int) e.getPoint().getY();

@@ -670,17 +670,9 @@ public class main {
 					pane.fillCanvas(Color.white);
 					for (int i=0; i<shapeList.size(); i++){
 						//Change current shape cordinations
-						shapeList.get(i).getPoints().get(0).x +=  dragDx;
-						shapeList.get(i).getPoints().get(0).y +=  dragDy;
-						if (shapeList.get(i).getPoints().size() > 1){				 // circle has only one point so this point and the next ones are not relevant
-						shapeList.get(i).getPoints().get(1).x +=  dragDx;
-						shapeList.get(i).getPoints().get(1).y +=  dragDy;
-						}
-						if (shapeList.get(i).getPoints().size() == 4){ // Only bezier has 4 points
-							shapeList.get(i).getPoints().get(2).x +=  dragDx;
-							shapeList.get(i).getPoints().get(2).y +=  dragDy;
-							shapeList.get(i).getPoints().get(3).x +=  dragDx;
-							shapeList.get(i).getPoints().get(3).y +=  dragDy;
+						for ( int j=0; j < shapeList.get(i).getPoints().size(); j++ ){
+							shapeList.get(i).getPoints().get(j).x += dragDx;
+							shapeList.get(i).getPoints().get(j).y += dragDy;
 						}
 						//Draw current shape
 						shapeList.get(i).draw();

@@ -513,6 +513,7 @@ public class main {
         clearScreen_menu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				transformation=0;
 				pane.fillCanvas(Color.white);
 				System.out.println( shapeList.toString() );
 				//shapeList.clear();
